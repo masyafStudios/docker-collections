@@ -3,14 +3,13 @@
 # VERSION	0.1
 # DOCKER-VERSION	0.6
 
-# Picked Ubuntu as the Primary OS.
-FROM ubuntu:latest
+# Picked Ubuntu 12.04.3 as the Primary OS.
+FROM ubuntu:precise
 
 # Gave myself some credit for doing this. Give it where it's due!
 MAINTAINER Kenny Raghunath, Kenny@masyafstudios.com
 
 # Appearantly a requirement that's needed for the next step, also some basic tools to use later on.
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 RUN apt-get -y install python-software-properties nano wget
 
 # Install all necessary keys for MongoDB. Instructions are found on the official website.
@@ -24,7 +23,7 @@ RUN /usr/bin/apt-add-repository -y ppa:nginx/stable
 RUN apt-get update
 
 # Install all apt repository software. This includes MongoDB, Memcache, Git, Beanstalkd, and nginx. There are also some other basic system requirements that are needed.
-RUN apt-get install -y mongodb-10gen memcached nginx git openjdk-7-jdk libxml2-dev curl libtidy-dev libzip-dev libgd2-xpm-dev libcurl4-openssl-dev autoconf libyaml-dev libevent-dev make
+RUN apt-get install -y mongodb-10gen memcached nginx git openjdk-6-jdk libxml2-dev curl libtidy-dev libzip-dev libgd2-xpm-dev libcurl4-openssl-dev autoconf libyaml-dev libevent-dev make
 
 # Install Beanstalkd from source since it cannot be pulled from apt or when I figure out where it is in apt.
 ADD https://github.com/kr/beanstalkd/archive/v1.9.tar.gz ./
