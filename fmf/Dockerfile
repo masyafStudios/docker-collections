@@ -46,9 +46,9 @@ RUN dpkg -i elasticsearch-0.90.5.deb && service elasticsearch start
 # Expose the ports we need to the outside. [ 11300 is Beanstalkd ]
 EXPOSE 80 11211 27017 11300
 
-#Configure nginx and PHP.
-ADD 
-ADD
+# Configure nginx, PHP and other pieces of software for use.
+ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/nginx.conf /etc/nginx/nginx.conf
+ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/php.ini /usr/local/lib/php.ini
 
 # Run commands to start up the environment.
 CMD nginx
