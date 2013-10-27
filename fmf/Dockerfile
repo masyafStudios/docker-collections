@@ -9,8 +9,8 @@ FROM ubuntu:latest
 # Gave myself some credit for doing this. Give it where it's due!
 MAINTAINER Kenny Raghunath, Kenny@masyafstudios.com
 
-# Appearantly a requirement that's needed for the next step.
-RUN apt-get -y install python-software-properties
+# Appearantly a requirement that's needed for the next step, also some basic tools to use later on.
+RUN apt-get -y install python-software-properties nano wget
 
 # Install all necessary keys for MongoDB. Instructions are found on the official website.
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
@@ -24,9 +24,6 @@ RUN apt-get update
 
 # Install all apt repository software. This includes MongoDB, Memcache, Git, Beanstalkd, and nginx. There are also some other basic system requirements that are needed.
 RUN apt-get install -y mongodb-10gen memcached nginx git openjdk-6-jdk libxml2-dev curl libtidy-dev libzip-dev libgd2-xpm-dev libcurl4-openssl-dev autoconf libyaml-dev libevent-dev make
-
-# Configure Nginx so it doesn't exit and we turn off the daemon mode.
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # Install Beanstalkd from source since it cannot be pulled from apt or when I figure out where it is in apt.
 ADD https://github.com/kr/beanstalkd/archive/v1.9.tar.gz ./
@@ -49,6 +46,7 @@ EXPOSE 80 11211 27017 11300
 # Configure nginx, PHP and other pieces of software for use.
 ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/nginx.conf /etc/nginx/nginx.conf
 ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/php.ini /usr/local/lib/php.ini
+ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 # Run commands to start up the environment.
-CMD nginx
+RUN nginx && php-fpm
