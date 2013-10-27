@@ -38,7 +38,7 @@ RUN printf "\n" | pecl install yaml memcache mongo
 
 # Next we install Elastic Search. I'm not sure if this works out of the box, but through testing the script, we shall see.
 ADD https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.90.5.deb ./
-RUN dpkg -i elasticsearch-0.90.5.deb && service elasticsearch start
+RUN dpkg -i elasticsearch-0.90.5.deb
 
 # Expose the ports we need to the outside. [ 11300 is Beanstalkd ]
 EXPOSE 80 11211 27017 11300
@@ -49,4 +49,4 @@ ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/php.
 ADD https://raw.github.com/masyafStudios/docker-collections/master/fmf/conf/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 # Run commands to start up the environment.
-RUN nginx && php-fpm
+CMD nginx && php-fpm && mongod && memcache && beanstalkd -p 11300 && service elasticsearch start
