@@ -25,6 +25,9 @@ RUN apt-get update
 # Install all apt repository software. This includes MongoDB, Memcache, Git, Beanstalkd, and nginx. There are also some other basic system requirements that are needed.
 RUN apt-get install -y mongodb-10gen memcached nginx git openjdk-6-jdk libxml2-dev curl libtidy-dev libzip-dev libgd2-xpm-dev libcurl4-openssl-dev autoconf libyaml-dev libevent-dev make
 
+# Configure Nginx so it doesn't exit and we turn off the daemon mode.
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
 # Install Beanstalkd from source since it cannot be pulled from apt or when I figure out where it is in apt.
 ADD https://github.com/kr/beanstalkd/archive/v1.9.tar.gz ./
 RUN tar xvzf ./v1.9.tar.gz && cd beanstalkd-1.9 && make && make install
@@ -43,4 +46,9 @@ RUN dpkg -i elasticsearch-0.90.5.deb && service elasticsearch start
 # Expose the ports we need to the outside. [ 11300 is Beanstalkd ]
 EXPOSE 80 11211 27017 11300
 
+#Configure nginx and PHP.
+ADD 
+ADD
+
 # Run commands to start up the environment.
+CMD nginx
