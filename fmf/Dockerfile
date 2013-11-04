@@ -23,7 +23,7 @@ RUN /usr/bin/apt-add-repository -y ppa:nginx/stable
 RUN apt-get update
 
 # Install all apt repository software. This includes MongoDB, Memcache, Git, Beanstalkd, and nginx. There are also some other basic system requirements that are needed.
-RUN apt-get install -y mongodb-10gen memcached nginx git openjdk-6-jdk libxml2-dev curl libtidy-dev libzip-dev libgd2-xpm-dev libcurl4-openssl-dev autoconf libyaml-dev libevent-dev make
+RUN apt-get install -y mongodb-10gen memcached nginx git openjdk-6-jdk libxml2-dev curl libtidy-dev libzip-dev libgd2-xpm-dev libcurl4-openssl-dev autoconf libyaml-dev libevent-dev libmcrypt-dev make
 
 # Install Beanstalkd from source since it cannot be pulled from apt or when I figure out where it is in apt.
 ADD https://github.com/kr/beanstalkd/archive/v1.9.tar.gz ./
@@ -31,7 +31,7 @@ RUN tar xvzf ./v1.9.tar.gz && cd beanstalkd-1.9 && make && make install
 
 # Install PHP 5.5.5 from source. It is a long command chain due to what I understand of Docker.
 ADD http://us2.php.net/get/php-5.5.5.tar.gz/from/us1.php.net/mirror ./php-5.5.5.tar.gz
-RUN tar xvzf ./php-5.5.5.tar.gz && cd php-5.5.5/ && ./configure --enable-fpm --with-curl --with-openssl --with-gd --with-tidy --enable-zip && make && make install
+RUN tar xvzf ./php-5.5.5.tar.gz && cd php-5.5.5/ && ./configure --enable-fpm --with-curl --with-openssl --with-gd --with-tidy --enable-zip --with-mcrypt && make && make install
 
 # Install the PHP extensions that's needed for FMF. Since some of the pecl requests are interactive, the printf command tells it to default to whatever it has.
 RUN printf "\n" | pecl install yaml memcache mongo
